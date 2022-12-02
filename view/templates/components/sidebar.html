@@ -1,0 +1,62 @@
+<div class="form-group" style="position: relative; overflow-y: scroll; height: 70vh;">
+    <div class="list-group list-group-checkable d-grid gap-2 border-0 w-auto" id="city">
+        <legend>Thành phố</legend>
+        {% for i in range(0, data["city"]|length) %}
+            <input class="list-group-item-check pe-none" type="radio" name="city" id='{{data["city"][i]["id"]}}' value='{{data["city"][i]["id"]}}&{{data["city"][i]["urlImage"]}}' onclick='demo_img_car(this.value)'>
+            <label class="list-group-item rounded-3 py-3" for='{{data["city"][i]["id"]}}' >
+                {{data["city"][i]["city_name"]}}
+                <span class="d-block small opacity-50">{{data["city"][i]["description"]}}</span>
+            </label>
+        {% endfor %}
+    </div>
+
+    <div class="list-group list-group-checkable d-grid gap-2 border-0 w-auto" id="member">
+        <legend>Số khách</legend>
+        <div class="input-group">
+            <label style="padding-right: 1vw;">Người lớn</label>
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[2]">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </button>
+            </span>
+            <input type="text" name="quant[2]" class="form-control input-number" value="1" min="1" max="100">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </span>
+        </div>
+
+        <div class="input-group">
+            <label style="padding-right: 1vw;">Trẻ em</label>
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[1]">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </button>
+            </span>
+            <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1" max="100">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[1]">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </span>
+        </div>
+    </div>
+
+    <div class="list-group list-group-checkable d-grid gap-2 border-0 w-auto" id="interior">
+        <legend>Số phòng</legend>
+        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+            <option value="1" selected>Một</option>
+            <option value="2">Hai</option>
+            <option value="3">Bốn</option>
+        </select>
+    </div>
+
+    <div class="list-group list-group-checkable d-grid gap-2 border-0 w-auto" id="interior">
+        <legend>Thời gian nhận trả phòng</legend>
+        <label>Nhận phòng</label>
+        <input type="date" id="datestart" name="datestart">
+        <label>Trả phòng</label>
+        <input type="date" id="dateend" name="dateend">
+    </div>
+</div>

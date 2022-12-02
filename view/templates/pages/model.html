@@ -1,0 +1,95 @@
+{% if role == 'admin' %}
+
+<div class="row">
+    {% for i in range(0, 3) %}
+    <div class="col-lg-4 mb-4 mb-lg-0">
+        <div class="card">
+            {% for j in range(0, data|length) %}
+            {% if j % 3 == i %}
+            <form action="/model" method="post" id="{{data[j]['id']}}">
+                <img src="http://drive.google.com/uc?export=view&id={{data[j]['model_urlImage']}}"
+                    class="w-100 shadow-1-strong rounded mb-4" alt="Boat on Calm Water" />
+                <input class="form-control form-control-sm" type="text" value="{{data[j]['model_urlImage']}}"
+                    name="model_urlImage">
+                <div class="card-body">
+                    <input class="form-control form-control-sm" type="hidden" name="id" value="{{data[j]['id']}}">
+                    <input class="form-control form-control-lg" type="text" value="{{data[j]['model_name']}}"
+                        name="model_name">
+                    <input class="form-control" type="text" value="{{data[j]['model_description']}}"
+                        name="model_description">
+                    <input type="submit" style="margin: 10px;" class="btn btn-primary btn-sm" form="{{data[j]['id']}}"
+                        value="Lưu">
+                </div>
+            </form>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    <button style="margin: 0 auto;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModelBoard" data-whatever="@mdo">Thêm mẫu ô tô</button>
+</div>
+
+<div class="modal fade" id="addModelBoard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm mẫu mới</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/model" method="post" id="addModel">
+                    <div class="form-group">
+                        <label for="new_id" class="col-form-label">model id:</label>
+                        <input type="text" class="form-control" id="new_id" name="new_id">
+                    </div>
+                    <div class="form-group">
+                        <label for="new_model_urlImage" class="col-form-label">url id:</label>
+                        <input type="text" class="form-control" id="new_model_urlImage" name="new_model_urlImage">
+                    </div>
+                    <div class="form-group">
+                        <label for="new_model_name" class="col-form-label">Tên mẫu: </label>
+                        <input type="text" class="form-control" id="new_model_name" name="new_model_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="new_model_description" class="col-form-label">Mô tả:</label>
+                        <textarea class="form-control" id="new_model_description" name="new_model_description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <input type="submit" class="btn btn-primary" form="addModel" value="Thêm mới">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% else %}
+<div class="row">
+    {% for i in range(0, 3) %}
+    <div class="col-lg-4 mb-4 mb-lg-0">
+        <div class="card">
+            {% for j in range(0, data|length) %}
+            {% if j % 3 == i %}
+            <img src="http://drive.google.com/uc?export=view&id={{data[j]['model_urlImage']}}"
+                class="w-100 shadow-1-strong rounded mb-4" alt="Boat on Calm Water" />
+            <div class="card-body">
+                <h5 class="card-title">{{data[j]['model_name']}}</h5>
+                <p class="card-text">
+                    {{data[j]['model_description']}}
+                </p>
+                <!-- <a href="#!" class="btn btn-primary">Button</a> -->
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endif %}
