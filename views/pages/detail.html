@@ -1,0 +1,79 @@
+{% set role = request.blueprint[:-3] %}
+<!-- {% print role %} # customer -->
+{% if role in ["customer", "manager"]: %}
+{% set hotel = data %}
+{% if role == 'manager' %}
+{% if mode == 'edit' %}
+<form method="post" action="/{{role}}/hotel/detail">
+    {% else %}
+    <form method="get" action="/{{role}}/hotel/detail">
+        {% endif %}
+        {% endif %}
+        <div class="container">
+            <div class="ecommerce-gallery" data-mdb-zoom-effect="true" data-mdb-auto-height="true">
+                <div class="row py-3 shadow-5">
+                    <div class="col-6">
+                        <div class="lightbox">
+                            <img src="http://drive.google.com/uc?export=view&id={{hotel['urlImageId']}}"
+                                alt="Gallery image 1" class="ecommerce-gallery-main-img active w-100" />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="col-6 mt-1">
+                            <img src="http://drive.google.com/uc?export=view&id={{hotel['urlImageId']}}"
+                                data-mdb-img="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Vertical/14a.webp"
+                                alt="Gallery image 1" class="active w-100" />
+                        </div>
+                        <div class="col-6 mt-1">
+                            <img src="http://drive.google.com/uc?export=view&id={{hotel['urlImageId']}}"
+                                data-mdb-img="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Vertical/12a.webp"
+                                alt="Gallery image 2" class="w-100" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                {% if mode == 'edit' %}
+                <label for="name">Tên khách sạn</label>
+                <input type="text" id="name" name="name" class="card-title" value="{{hotel['name']}}" /><br>
+                {% else %}
+                <h5 class="card-title">{{hotel['name']}}</h5>
+                {% endif %}
+                
+                {% if mode == 'edit' %}
+                <label for="price">Giá phòng</label>
+                <input type="text" id="price" name="price" class="card-text" value="{{hotel['price']}}" /><br>
+                {% else %}
+                <h5 class="card-text" style="color: green;">{{ "{:,.0f}".format(hotel['price']) }}VND</h5>
+                {% endif %}
+                
+                {% if mode == 'edit' %}
+                <label for="address">Địa chỉ</label>
+                <input type="text" id="address" name="address" class="card-text" value="{{hotel['address']}}" /><br>
+                {% else %}
+                <p class="card-text">
+                    {{hotel['address']}}
+                </p>
+                {% endif %}
+                
+                <a href="/{{role}}/hotel/booking?id={{hotel['id']}}">
+                    <button class="btn btn-primary">
+                        Đặt ngay
+                    </button>
+                </a>
+                <input type="hidden" value="{{hotel['id']}}" name="hotel_id" class="btn btn-primary">
+                {% if role == 'manager' %}
+                {% if mode == 'edit' %}
+                <input type="submit" value="save" name="request" class="btn btn-primary">
+                <input type="submit" value="cancel" name="request" class="btn btn-primary">
+                {% else %}                
+                <input type="submit" value="edit" name="mode" class="btn btn-primary">
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        {% if role == 'manager' %}
+    </form>
+    {% endif %}
+    {% endif %}

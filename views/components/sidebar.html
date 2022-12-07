@@ -1,0 +1,41 @@
+<form action="/build" method="post" id="formOder">
+    <div style="position: relative; overflow-y: scroll; height: 70vh;">
+        <div class="list-group list-group-checkable d-grid gap-2 border-0 w-auto" id="design">
+            <legend>Design</legend>
+            {% for i in range(0, data["design"]|length) %}
+            <input class="list-group-item-check pe-none" type="radio" name="design" id='{{data["design"][i]["id"]}}'
+                value='{{data["design"][i]["id"]}}' onclick="demo_img_car(`{{data['design'][i]['urlImage']}}`)">
+            <label class="list-group-item rounded-3 py-3" for='{{data["design"][i]["id"]}}'>
+                {{data["design"][i]["component_name"]}}
+                <span class="d-block small opacity-50">{{data["design"][i]["component_description"]}}</span>
+            </label>
+            {% endfor %}
+        </div>
+
+        <div class="list-group list-group-checkable d-grid gap-2 border-0 w-auto" id="exterior">
+            <legend>Exterior</legend>
+            {% for i in range(0, data["exterior"]|length) %}
+            <input class="list-group-item-check pe-none" type="radio" name="exterior" id='{{data["exterior"][i]["id"]}}'
+                value='{{data["exterior"][i]["id"]}}' onclick="demo_img_car(`{{data['exterior'][i]['urlImage']}}`)">
+            <label class="list-group-item rounded-3 py-3" for='{{data["exterior"][i]["id"]}}'>
+                {{data["exterior"][i]["component_name"]}}
+                <span class="d-block small opacity-50">{{data["exterior"][i]["component_description"]}}</span>
+            </label>
+            {% endfor %}
+        </div>
+
+        <div class="list-group list-group-checkable d-grid gap-2 border-0 w-auto" id="interior">
+            <legend>Interior</legend>
+            {% for i in range(0, data["interior"]|length) %}
+            <input class="list-group-item-check pe-none" type="radio" name="interior" id='{{data["interior"][i]["id"]}}'
+                value='{{data["interior"][i]["id"]}}' onclick="demo_img_car(`{{data['interior'][i]['urlImage']}}`)">
+            <label class="list-group-item rounded-3 py-3" for='{{data["interior"][i]["id"]}}'>
+                {{data["interior"][i]["component_name"]}}
+                <span class="d-block small opacity-50">{{data["interior"][i]["component_description"]}}</span>
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <input type="submit" style="margin: 10px;" class="btn btn-primary btn-lg" form="formOder" value="Đặt hàng">
+</form>

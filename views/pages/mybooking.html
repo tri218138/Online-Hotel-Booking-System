@@ -1,0 +1,40 @@
+{% set role = request.blueprint[:-3] %}
+<!-- {% print role %} # customer -->
+{% if role in ["customer","manager"] %}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">ID đơn đặt phòng</th>
+            <th scope="col">Thời gian đặt phòng</th>
+            <th scope="col">Tên khách sạn</th>
+            <th scope="col">Người lớn</th>
+            <th scope="col">Trẻ em</th>
+            <th scope="col">Nhận phòng</th>
+            <th scope="col">Trả phòng</th>
+            <th scope="col">Thanh toán</th>
+            <th scope="col">Số tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in range(data["mybooking"]|length) %}
+        {% set booking = data["mybooking"][i] %}
+        <tr>
+            <th scope="row">{{i}}</th>
+            <td>
+                <a href="/{{role}}/hotel/booking?id={{booking.hotel_id}}&adult={{booking.adult}}&child={{booking.child}}&datestart={{booking.datestart}}&dateend={{booking.dateend}}&method={{booking.method}}">{{booking['id']}}</a>
+            </td>
+            <td>{{booking['time']}}</td>
+            <td>{{booking['hotel_name']}}</td>
+            <td>{{booking['adult']}}</td>
+            <td>{{booking['child']}}</td>
+            <td>{{booking['datestart']}}</td>
+            <td>{{booking['dateend']}}</td>
+            <td>{{booking['method']}}</td>
+            <td>{{ "{:,.0f}".format(booking['cost']) }} VND</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}

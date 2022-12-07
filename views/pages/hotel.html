@@ -1,0 +1,46 @@
+{% set role = request.blueprint[:-3] %}
+
+{% if role in ["customer", "manager"]: %}
+<form action="/{{role}}/hotel/search" method="get" style="text-align:center">
+    <div class="form-group" style="position: relative;">
+        <div class="list-group list-group-checkable gap-2 border-0 w-auto" style="display: flex; flex-direction: row;" id="city">
+            {% for city in data["city"] %}
+            <div class="card">
+                <input class="list-group-item-check pe-none" type="radio" name="city" id='{{city["id"]}}'
+                    value='{{city["id"]}}'>
+                <label class="list-group-item rounded-3 py-3" for='{{city["id"]}}'>
+                    {{city["name"]}}
+                    <!-- <span class="d-block small opacity-50">{{city["description"]}}</span> -->
+                </label>
+            </div>
+            {% endfor %}
+            <input type="submit" class="btn btn-primary" value="Tìm">
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    {% for i in range(0, 3) %}
+    <div class="col-lg-4 mb-4 mb-lg-0">
+        {% for j in range(0, data["hotel"]|length) %}
+        {% if j % 3 == i %}
+        {% set hotel = data["hotel"][j] %}
+        <a href="/{{role}}/hotel/detail?id={{hotel['id']}}" style="text-decoration: none;">
+            <div class="card">
+                <img src="http://drive.google.com/uc?export=view&id={{hotel['urlImageId']}}"
+                    class="w-100 shadow-1-strong rounded mb-4" alt="Boat on Calm Water" />
+                <div class="card-body">
+                    <h5 class="card-title">{{hotel['name']}}</h5>
+                    <p class="card-text">
+                        {{hotel['address']}}
+                    </p>
+                </div>
+            </div>
+        </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+
+{% endif %}
