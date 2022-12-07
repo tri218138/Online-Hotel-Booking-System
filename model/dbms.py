@@ -1,8 +1,9 @@
 import pymysql.cursors
 import json
 import itertools
-
+import pandas as pd
 from model.database import Database
+
 
 class DBMS:
     def __init__(self):
@@ -16,6 +17,9 @@ class DBMS:
         # self.Cursor = self.Database.cursor()
         pass
     def selectDataModel(self):
+        # self.Cursor.execute(f"SELECT id,name,description \
+        #                     FROM onlinebookinghotel.city")
+        # return self.Cursor.fetchall()
         return Database["hotel"]
     def selectDataCity(self):
         return Database["city"]
