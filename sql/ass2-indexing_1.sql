@@ -1,6 +1,6 @@
 USE HotelBooking;
 --
-DROP INDEX idx_admin ON admins;
+-- DROP INDEX idx_admin ON admins;
 
 SELECT cluster_no, COUNT(admin_id) AS count_admin_id
 FROM admins

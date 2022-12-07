@@ -8,23 +8,26 @@ CREATE PROCEDURE prod_check_age(birthyear INT)
 BEGIN
     IF birthyear > YEAR(CURDATE()) - 18 THEN
         SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'User must be older than 18 years old';
-    END IF;
-END;
+            SET MESSAGE_TEXT = 'User must be older than 18 years old'
+    END IF
+END
+delimiter ;
 CREATE TRIGGER tr_check_age_ins
     AFTER INSERT
     ON users
     FOR EACH ROW
 BEGIN
-    CALL prod_check_age(NEW.birth_year);
-END;
+    CALL prod_check_age(NEW.birth_year)
+END
+delimiter ;
 CREATE TRIGGER tr_check_age_upd
     AFTER UPDATE
     ON users
     FOR EACH ROW
 BEGIN
-    CALL prod_check_age(NEW.birth_year);
-END;
+    CALL prod_check_age(NEW.birth_year)
+END
+delimiter ;
 
 -- Test the trigger
 -- Insert
@@ -48,9 +51,10 @@ CREATE TRIGGER tr_check_dates_ins
 BEGIN
     IF NEW.check_in < CURDATE() THEN
         SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Check-in date must not be in the past';
-    END IF;
-END;
+            SET MESSAGE_TEXT = 'Check-in date must not be in the past'
+    END IF
+END
+delimiter ;
 CREATE TRIGGER tr_check_dates_upd
     BEFORE UPDATE
     ON bookings
@@ -58,10 +62,10 @@ CREATE TRIGGER tr_check_dates_upd
 BEGIN
     IF NEW.check_in < CURDATE() THEN
         SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Check-in date must not be in the past';
-    END IF;
-END;
-
+            SET MESSAGE_TEXT = 'Check-in date must not be in the past'
+    END IF
+END
+delimiter ;
 -- Test the trigger
 -- Insert
 INSERT INTO users (id, sex, email, birth_year, phone_number, first_name, last_name, citizen_id)
@@ -85,9 +89,9 @@ CREATE TRIGGER tr_update_timestamp_bookings_upd
     ON bookings
     FOR EACH ROW
 BEGIN
-    SET NEW.`timestamp` = CURRENT_TIMESTAMP;
-END;
-
+    SET NEW.`timestamp` = CURRENT_TIMESTAMP
+END
+delimiter ;
 -- Test the trigger
 INSERT INTO users (id, sex, email, birth_year, phone_number, first_name, last_name, citizen_id)
 VALUES ('276b252d-5ae5-48e8-ace8-92eaf84bfc89', 'M', 'def@example.com', 1990, '0123456780', 'John', 'X',
@@ -108,13 +112,14 @@ CREATE FUNCTION func_count_admins(cluster_no INT)
     RETURNS INT
     DETERMINISTIC
 BEGIN
-    DECLARE count INT;
+    DECLARE count INT
     SELECT COUNT(*)
     INTO count
     FROM admins a
-    WHERE a.cluster_no = cluster_no;
-    RETURN count;
-END;
+    WHERE a.cluster_no = cluster_no
+    RETURN count
+END
+delimiter ;
 
 -- Test the function
 SELECT func_count_admins(1);
@@ -125,15 +130,15 @@ CREATE FUNCTION func_count_available_rooms(hotel_no VARCHAR(36))
     RETURNS INT
     READS SQL DATA
 BEGIN
-    DECLARE count INT;
+    DECLARE count INT
     SELECT COUNT(*)
     INTO count
     FROM rooms r
     WHERE r.hotel_id = hotel_no
-      AND r.`status` = 'AVAILABLE';
-    RETURN count;
-END;
-
+      AND r.`status` = 'AVAILABLE'
+    RETURN count
+END
+delimiter ;
 -- Test the function
 SELECT func_count_available_rooms('b9f2c2f0-5c1f-4b9c-9c1f-2c2f0b9c9c1f');
 
@@ -144,9 +149,9 @@ BEGIN
     SELECT u.id, COUNT(IFNULL(b.id, 0)) AS num_bookings
     FROM users u
              LEFT JOIN bookings b ON u.id = b.user_id
-    GROUP BY u.id;
-END;
-
+    GROUP BY u.id
+END
+delimiter ;
 -- Test the procedure
 CALL prod_count_bookings();
 
@@ -154,20 +159,21 @@ CALL prod_count_bookings();
 DROP PROCEDURE IF EXISTS prod_check_login;
 CREATE PROCEDURE prod_check_login(username VARCHAR(50))
 BEGIN
-    DECLARE id VARCHAR(36);
-    DECLARE hashed_password VARCHAR(512);
-    DECLARE salt VARCHAR(512);
+    DECLARE id VARCHAR(36)
+    DECLARE hashed_password VARCHAR(512)
+    DECLARE salt VARCHAR(512)
     SELECT id, hashed_password, salt
     INTO id, hashed_password, salt
     FROM login
-    WHERE login.username = username;
+    WHERE login.username = username
     IF id IS NULL THEN
         SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Username does not exist';
-    END IF;
+            SET MESSAGE_TEXT = 'Username does not exist'
+    END IF
     # Return the hashed password and salt
-    SELECT hashed_password, salt;
-END;
+    SELECT hashed_password, salt
+END
+delimiter ;
 
 -- Test the procedure
 CALL prod_check_login('admin');
