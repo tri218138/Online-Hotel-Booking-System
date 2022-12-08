@@ -6,6 +6,9 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">ID đơn đặt phòng</th>
+            {% if role == "manager" %}
+            <th scope="col">Khách hàng</th>
+            {% endif %}
             <th scope="col">Thời gian đặt phòng</th>
             <th scope="col">Tên khách sạn</th>
             <th scope="col">Người lớn</th>
@@ -24,6 +27,9 @@
             <td>
                 <a href="/{{role}}/hotel/booking?id={{booking.hotel_id}}&adult={{booking.adult}}&child={{booking.child}}&datestart={{booking.datestart}}&dateend={{booking.dateend}}&method={{booking.method}}">{{booking['id']}}</a>
             </td>
+            {% if role == "manager" %}
+            <td>{{booking['username']}}</td>
+            {% endif %}
             <td>{{booking['time']}}</td>
             <td>{{booking['hotel_name']}}</td>
             <td>{{booking['adult']}}</td>

@@ -15,7 +15,6 @@ def auth():
     if not sign:
         return redirect(url_for('main_bp.login'))
 
-
 @customer_bp.route('/', methods=['GET', 'POST'])
 @customer_bp.route('/home', methods=['GET', 'POST'])
 # @login_required

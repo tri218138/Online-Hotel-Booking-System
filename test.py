@@ -1,2 +1,3 @@
-if "back" in "backofficer":
-    print(2)
+from datetime import datetime
+today = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+print(today)

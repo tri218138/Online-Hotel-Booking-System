@@ -1,4 +1,5 @@
 from flask import Blueprint, request, render_template, session, redirect, url_for
+from model.dbms import dbms
 
 main_bp = Blueprint('main_bp', __name__)
 
@@ -44,14 +45,6 @@ def login():
             session["idlogin"] = data["username"]
             TOKEN.append({"idlogin": data["username"], "username" : data["username"], "role": "manager"})
             return redirect(url_for('manager_bp.home'))
-        elif "designer" in data["username"] and "designer" in data["password"]:
-            session["idlogin"] = data["username"]
-            TOKEN.append({"idlogin": data["username"], "username" : data["username"], "role": "designer"})
-            return redirect(url_for('designer_bp.home'))
-        elif "supplier" in data["username"] and "supplier" in data["password"]:
-            session["idlogin"] = data["username"]
-            TOKEN.append({"idlogin": data["username"], "username" : data["username"], "role": "supplier"})
-            return redirect(url_for('supplier_bp.home'))
     elif request.method == 'GET':
         pass
     loginPage = render_template('pages/login.html')
@@ -63,6 +56,7 @@ def setting():
 
 @main_bp.route('/logout')
 def logout():
+    dbms.storeUpdateDatabase()
     print('session clear')
     session.clear()
     return redirect(url_for('main_bp.home'))

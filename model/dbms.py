@@ -3,7 +3,7 @@ import json
 import itertools
 import pandas as pd
 from model.database import Database
-
+from datetime import datetime
 
 class DBMS:
     def __init__(self):
@@ -21,6 +21,14 @@ class DBMS:
             "customer": self.getDatabaseCustomer(),
             "booking": []
         }
+    def storeUpdateDatabase(self):
+        # hotel = self.Database["hotel"]
+        # self.Cursor.execute(f"UPDATE hotelbooking.hotel\
+        #                     SET price = {hotel['price']} \
+        #                     WHERE id = '{hotel['id']}'")
+        self.Database.commit()
+        pass
+
     def getDatabaseHotel(self):
         self.Cursor.execute(f"SELECT distinct `id`, `name`, `desc` as `description`, `address`, `rating` as `rank`, `city_id`, `urlImageId` \
                             FROM hotelbooking.hotels;")
@@ -39,7 +47,10 @@ class DBMS:
         return hotels    
     def getDatabaseCity(self):
         self.Cursor.execute("SELECT * FROM hotelbooking.city")
-        return self.Cursor.fetchall()
+        city = self.Cursor.fetchall()
+        for c in city:
+            c['id'] = c['city_id']
+        return city
     def getDatabaseCustomer(self):
         self.Cursor.execute("SELECT * FROM hotelbooking.users")
         customers = self.Cursor.fetchall()
@@ -71,7 +82,8 @@ class DBMS:
             if h["id"] == hotelid:
                 return h
     def storeBooking(self, order):
-        print(order)
+        order["time"] = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+        # print(order)
         self.Database["booking"].append(order)
     def selectBusinessBooking(self):
         return self.Database["booking"]
